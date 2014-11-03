@@ -52,9 +52,9 @@
     ShareVideoURL = @"http://v.youku.com/v_show/id_XNjk4NjczMzg0.html";         //分享视频URL
     ShareImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ShareImageURL]]];    //分享图片
     
-//    NSLog(@"微信是否已安装:%hhd",[YouTuiSDK WxIsAppOnstalled]);
-//    NSLog(@"新浪是否已安装:%hhd",[YouTuiSDK SinaIsAppInstalled]);
-//    NSLog(@"QQ是否已安装:%hhd",[YouTuiSDK QQisInstalled]);
+    NSLog(@"微信是否已安装:%hhd",[YouTuiSDK WxIsAppOnstalled]);
+    NSLog(@"新浪是否已安装:%hhd",[YouTuiSDK SinaIsAppInstalled]);
+    NSLog(@"QQ是否已安装:%hhd",[YouTuiSDK QQisInstalled]);
 
 }
 

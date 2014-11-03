@@ -12,22 +12,34 @@
 	<dict>
 		<key>906A789ADBFDBF6382BBF5666CCDBC61F62BEE93</key>
 		<string>https://github.com/XieFreeGeek/YouTuiShareSdk.git</string>
+		<key>FB822A89AAAB5D1EF9B36A15319F950B446A33D8</key>
+		<string>https://github.com/bidaround/YouTuiSDK.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>YouTuiSDK_1.0.0/YoutuiSDKDemo/YoutuiSDKDemo.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>906A789ADBFDBF6382BBF5666CCDBC61F62BEE93</key>
+		<string>../../../../../YouTuiShareSdk</string>
+		<key>FB822A89AAAB5D1EF9B36A15319F950B446A33D8</key>
 		<string>../../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/XieFreeGeek/YouTuiShareSdk.git</string>
+	<string>https://github.com/bidaround/YouTuiSDK.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>906A789ADBFDBF6382BBF5666CCDBC61F62BEE93</string>
+	<string>FB822A89AAAB5D1EF9B36A15319F950B446A33D8</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FB822A89AAAB5D1EF9B36A15319F950B446A33D8</string>
+			<key>IDESourceControlWCCName</key>
+			<string>YouTuiSDK</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
