@@ -8,7 +8,6 @@
 
 #import "SinaCallBack.h"
 #import "YouTuiSDK.h"
-#import "Header.h"
 @implementation SinaCallBack
 -(instancetype)init
 {
@@ -26,7 +25,6 @@
 {
     if ([response isKindOfClass:WBSendMessageToWeiboResponse.class])
     {
-        NSString *title = @"分享结果";
         //        response.statusCode    响应状态码
         //         0 :  成功
         //        -1 :  用户取消发送
@@ -39,12 +37,7 @@
         
         NSString *message = [NSString stringWithFormat:@"响应状态: %d\n响应UserInfo数据: %@\n原请求UserInfo数据: %@",(int)response.statusCode, response.userInfo, response.requestUserInfo];
         DLog(@"%@",message);
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:@"确定"
-                                              otherButtonTitles:nil];
-        [alert show];
+        ShowAlertss(@"Results", message)
         /**
          *  分享成功以后,获取友推后台的对应积分 isShare 是否为友推分享
          */
@@ -66,12 +59,8 @@
         //        response.requestUserInfo                          用户详细信息
         _TokenStr = [(WBAuthorizeResponse *)response accessToken];   //授权获得的认证口令,登出的时候需要调用它
         NSString * message = [NSString stringWithFormat:@"%@",[YouTuiSDK SinaGetUserInfoWithAppkey:_TokenStr Uid:[(WBAuthorizeResponse *)response userID]]];
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"新浪微博授权用户信息"
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:@"好"
-                                              otherButtonTitles:nil];
-        [alert show];
+
+        ShowAlertss(@"Results", message)
         DLog(@"新浪微博授权用户信息:%@",message);
     }
 }

@@ -16,21 +16,21 @@ extern NSString *kRennServiceTypeListFeed;
  */
 @interface PutFeedParam : RennParam
 //必选
-@property (nonatomic, strong) NSString *message;
+@property (nonatomic, retain) NSString *message;
 //必选
-@property (nonatomic, strong) NSString *title;
+@property (nonatomic, retain) NSString *title;
 //可选
-@property (nonatomic, strong) NSString *actionTargetUrl;
+@property (nonatomic, retain) NSString *actionTargetUrl;
 //可选
-@property (nonatomic, strong) NSString *imageUrl;
+@property (nonatomic, retain) NSString *imageUrl;
 //必选
-@property (nonatomic, strong) NSString *description;
+@property (nonatomic, retain) NSString *description;
 //可选
-@property (nonatomic, strong) NSString *subtitle;
+@property (nonatomic, retain) NSString *subtitle;
 //可选
-@property (nonatomic, strong) NSString *actionName;
+@property (nonatomic, retain) NSString *actionName;
 //必选
-@property (nonatomic, strong) NSString *targetUrl;
+@property (nonatomic, retain) NSString *targetUrl;
 
 @end
 

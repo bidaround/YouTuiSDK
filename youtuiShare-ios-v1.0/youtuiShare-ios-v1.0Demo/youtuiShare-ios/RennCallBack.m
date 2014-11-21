@@ -7,7 +7,6 @@
 //
 
 #import "RennCallBack.h"
-#import "Header.h"
 @implementation RennCallBack
 -(instancetype)init
 {
@@ -32,14 +31,15 @@
  */
 -(void)rennLoginDidFailWithError:(NSError *)error
 {
-    [self ShowAlertTitle:@"人人网授权失败" andMessage:[NSString stringWithFormat:@"%@",error]];
+    NSString * ErrorMessage = [NSString stringWithFormat:@"%@",error];
+    ShowAlertss(@"人人网授权失败",ErrorMessage)
 }
 /**
  *  人人网取消登陆的回调
  */
 -(void)rennLoginCancelded
 {
-    [self ShowAlertTitle:@"您取消了人人网的的授权" andMessage:nil];
+    ShowAlertss(nil, @"您取消了人人网的授权")
 }
 /**
  *  人人网登出成功的回调
@@ -53,25 +53,21 @@
  */
 -(void)rennService:(RennService *)service requestSuccessWithResponse:(id)response
 {
-        [self ShowAlertTitle:@"RennResults" andMessage:[NSString stringWithFormat:@"%@",response]];
-        DLog(@"用户信息:%@",response);
-        /**
-         *  分享成功以后,获取友推后台的对应积分 isShare 是否为友推分享
-         */
-        [YouTuiSDK SharePointisShare:YES];
+    DLog(@"用户信息:%@",response);
+    NSString * UserInfo = [NSString stringWithFormat:@"%@",response];
+    ShowAlertss(@"RennResults",UserInfo)
+      /**
+        *  分享成功以后,获取友推后台的对应积分 isShare 是否为友推分享
+        */
+//     [YouTuiSDK SharePointisShare:YES];
 }
 /**
  *  人人网获取当前授权用户信息失败的回调
  */
 -(void)rennService:(RennService *)service requestFailWithError:(NSError *)error
 {
-    [self ShowAlertTitle:@"人人网获取用户信息失败" andMessage:[NSString stringWithFormat:@"Error Domain = %@\nError Code = %@",[error domain],[[error userInfo] objectForKey:@"code"]]];
-}
-
--(void)ShowAlertTitle:(NSString *)title andMessage:(NSString *)message
-{
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:title message:message delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-    [alert show];
+    NSString * message = [NSString stringWithFormat:@"Error Domain = %@\nError Code = %@",[error domain],[[error userInfo] objectForKey:@"code"]];
+    ShowAlertss(@"人人网获取用户信息失败",message)
 }
 
 @end

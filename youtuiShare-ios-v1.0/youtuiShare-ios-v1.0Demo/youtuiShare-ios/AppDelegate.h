@@ -11,6 +11,7 @@
 #import "QQCallBack.h"
 #import "TcWbCallBack.h"
 #import "SinaCallBack.h"
+#import "WxCallBack.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong , nonatomic) UIWindow *window;
@@ -19,5 +20,6 @@
 @property (strong , nonatomic) QQCallBack * QQCB;
 @property (strong , nonatomic) TcWbCallBack * TcWbCB;
 @property (strong , nonatomic) SinaCallBack * SinaCB;
+@property (strong , nonatomic) WxCallBack * WxCB;
 @end
 

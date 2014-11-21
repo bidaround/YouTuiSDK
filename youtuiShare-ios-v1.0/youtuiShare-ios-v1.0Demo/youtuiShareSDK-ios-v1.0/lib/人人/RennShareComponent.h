@@ -34,7 +34,7 @@ MessageTarget;
 */
 
 @protocol RennMessageProtocol <NSObject>
-@optional
+
 -(NSDictionary *) dictValue;
 -(NSString *) msgType;
 -(NSString *) msgVersion;

@@ -7,7 +7,6 @@
 //
 
 #import "QQCallBack.h"
-#import "Header.h"
 @implementation QQCallBack
 -(instancetype)init
 {
@@ -44,54 +43,8 @@
             [YouTuiSDK SharePointisShare:YES];
         }
     }
-    /**
-     *  微信分享回调
-     */
-    else if ([resp isKindOfClass:[SendMessageToWXResp class]])
-    {
-        //        errorCode   错误码
-        //         0 = 成功
-        //        -1 = 普通错误类型
-        //        -2 = 用户点击取消返回
-        //        -3 = 发送失败
-        //        -4 = 授权失败
-        //        -5 = 微信不支持
-        SendMessageToWXResp * sendWXResp = (SendMessageToWXResp *)resp;
-        
-        DLog(@"微信分享完毕返回数据");
-        DLog(@"错误码:%d",sendWXResp.errCode);
-        DLog(@"错误提示字符串:%@",sendWXResp.errStr);
-        DLog(@"相应类型:%d",sendWXResp.type);
-        
-        message = [NSString stringWithFormat:@"微信分享完毕返回数据\n错误码:%d\n错误提示字符串:%@\n相应类型:%d",sendWXResp.errCode,sendWXResp.errStr,sendWXResp.type];
-        
-        if (sendWXResp.errCode == 0)
-        {
-            /**
-             *  分享成功以后,获取友推后台的对应积分 isShare 是否为友推分享
-             */
-            [YouTuiSDK SharePointisShare:YES];
-        }
-    }
-    /**
-     *  微信授权成功的回调
-     */
-    else if ([resp isKindOfClass:[SendAuthResp class]])
-    {
-        SendAuthResp * sendAuth = (SendAuthResp *)resp;
-        {
-            DLog(@"返回码:%@",sendAuth.code);
-            DLog(@"状态:%@",sendAuth.state);
-            //获取授权凭证
-            NSDictionary * AuthDict = [YouTuiSDK WxAuthGetAccessTokenWithAppId:WXAppKey Secret:WXAppSecret Code:sendAuth.code];
-            //获取用户信息
-            NSDictionary * UserInfo = [YouTuiSDK WxAuthGetUserInfoWithAccessToken:[AuthDict objectForKey:@"access_token"] Openid:[AuthDict objectForKey:@"openid"]];
-            message = [NSString stringWithFormat:@"%@",UserInfo];
-
-        }
-    }
-
-    [self ShowAlertTitle:@"Results" andMessage:message];
+    
+    ShowAlertss(@"Results", message)
 
 }
 /**
@@ -99,7 +52,7 @@
  */
 -(void)tencentDidLogin
 {
-    [_YTsdk QQGetUserInfo];
+    [_YTsdk QQGetUserInfo];    //授权成功回调后调用此接口,返回执行代理方法getUserInfoResponse:
 }
 /**
  *  登陆失败后的回调
@@ -107,14 +60,14 @@
  */
 -(void)tencentDidNotLogin:(BOOL)cancelled
 {
-    [self ShowAlertTitle:nil andMessage:@"QQ登陆失败"];
+    ShowAlertss(nil, @"QQ登陆失败")
 }
 /**
  *  退出登陆的回调
  */
 -(void)tencentDidLogout
 {
-    [self ShowAlertTitle:@"您取消了QQ的授权" andMessage:nil];
+    ShowAlertss(nil, @"您取消了QQ授权")
 }
 /**
  *  获取当前授权用户信息的回调
@@ -130,11 +83,12 @@
             [str appendString:[NSString stringWithFormat:@"%@:%@\n",key,[response.jsonResponse objectForKey:key]]];
         }
         
-        [self ShowAlertTitle:@"QQ授权用户信息" andMessage:str];
+        ShowAlertss(@"QQ授权用户信息", str)
+        DLog(@"QQ授权用户信息:%@",str);
     }
     else
     {
-        [self ShowAlertTitle:@"获取用户信息失败" andMessage:[NSString stringWithFormat:@"%@",response.errorMsg]];
+        ShowAlertss(@"获取用户信息失败", response.errorMsg)
     }
 }
 
@@ -143,13 +97,6 @@
  */
 -(void)tencentDidNotNetWork
 {
-    [self ShowAlertTitle:@"请检查网络连接.." andMessage:nil];
+    ShowAlertss(nil, @"请检查网络链接")
 }
-
--(void)ShowAlertTitle:(NSString *)title andMessage:(NSString *)message
-{
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:title message:message delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-    [alert show];
-}
-
 @end

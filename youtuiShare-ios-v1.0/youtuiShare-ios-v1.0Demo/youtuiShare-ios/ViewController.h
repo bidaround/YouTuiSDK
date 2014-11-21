@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "YouTuiSDK.h"
-#import "Header.h"
 #import "SinaCallBack.h"
 #import "RennCallBack.h"
 #import "TcWbCallBack.h"

@@ -26,11 +26,10 @@
      */
     [YouTuiSDK connectYouTuiSDKWithAppId:YOUTUIAPPKEY inviteCode:@"" appUserId:AppUserID];
     
-    _ViewDelegate = [[ViewController alloc]init];
     _QQCB = [[QQCallBack alloc]init];
     _TcWbCB = [[TcWbCallBack alloc]init];
     _SinaCB = [[SinaCallBack alloc]init];
-    
+    _WxCB = [[WxCallBack alloc]init];
     return YES;
 }
 -(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
@@ -39,30 +38,30 @@
     NSString * UrlStr = [url absoluteString];
     if ([UrlStr hasPrefix:@"wx"])
     {
-        NSLog(@"微信客户端回调");
-        return [YouTuiSDK WxhandleOpenURL:url delegate:_QQCB];
+        DLog(@"微信客户端回调");
+        return [YouTuiSDK WxhandleOpenURL:url delegate:_WxCB];
     }
     else if ([UrlStr hasPrefix:@"wb"])
     {
         if ([sourceApplication isEqualToString:@"com.sina.weibo"])
         {
-            NSLog(@"新浪微博客户端回调");
+            DLog(@"新浪微博客户端回调");
             return [YouTuiSDK SinaWbhandleOpenURL:url delegate:_SinaCB];
         }
         else
         {
-            NSLog(@"腾讯微博回调");
+            DLog(@"腾讯微博回调");
             return [_TcWbCB.YTsdk TcWbhandleOpenURL:url];
         }
     }
     else if ([UrlStr hasPrefix:@"tencent"])
     {
-        NSLog(@"QQ回调");
+        DLog(@"QQ回调");
         return [YouTuiSDK QQhandleOpenURL:url delegate:_QQCB];
     }
     else if ([UrlStr hasPrefix:@"rm"])
     {
-        NSLog(@"人人网回调");
+        DLog(@"人人网回调");
         return [YouTuiSDK RennHandleOpenURL:url];
     }
     return YES;

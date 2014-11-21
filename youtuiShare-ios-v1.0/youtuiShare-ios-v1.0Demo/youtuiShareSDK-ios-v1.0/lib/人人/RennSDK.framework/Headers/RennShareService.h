@@ -50,9 +50,9 @@ extern NSString *kRennServiceTypeListHotShare;
  */
 @interface PutShareUrlParam : RennParam
 //可选
-@property (nonatomic, strong) NSString *comment;
+@property (nonatomic, retain) NSString *comment;
 //必选
-@property (nonatomic, strong) NSString *url;
+@property (nonatomic, retain) NSString *url;
 
 @end
 

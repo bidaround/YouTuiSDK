@@ -137,9 +137,10 @@
             
             if (PointArray.count != 0)
             {
-                if ([[PointArray objectAtIndex:i] integerValue] != 0)
+
+                PointDetailsLabel = [[UILabel alloc]init];
+                if ([[PointArray objectAtIndex:i] intValue] != 0)
                 {
-                    PointDetailsLabel = [[UILabel alloc]init];
                     PointDetailsLabel.text = [NSString stringWithFormat:@"分享+%@积分",[PointArray objectAtIndex:i]];
                     PointDetailsLabel.font = [UIFont systemFontOfSize:8];
                     PointDetailsLabel.textColor = [UIColor orangeColor];

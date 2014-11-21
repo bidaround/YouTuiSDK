@@ -7,7 +7,6 @@
 //
 
 #import "TcWbCallBack.h"
-#import "Header.h"
 #import "ViewController.h"
 @implementation TcWbCallBack
 -(instancetype)init
@@ -21,7 +20,6 @@
     
     return self;
 }
-
 #pragma mark ----------腾讯微博代理回调方法----------
 
 /**
@@ -31,7 +29,6 @@
  */
 -(void)DidAuthFinished:(WeiboApiObject *)wbobj
 {
-//    ViewController * VC = [[ViewController alloc]init];
     [_YTsdk TcWbRequestUserInfoDelegate:self];   //登陆成功获取当前授权用户的信息
 }
 /**
@@ -41,7 +38,7 @@
  */
 -(void)DidAuthCanceled:(WeiboApiObject *)wbobj
 {
-    [self ShowAlertTitle:@"取消了腾讯微博的授权" andMessage:nil];
+    ShowAlertss(nil, @"取消了腾讯微博的授权")
 }
 /**
  *  腾讯微博授权失败的回调
@@ -50,7 +47,7 @@
  */
 -(void)DidAuthFailWithError:(NSError *)error
 {
-    [self ShowAlertTitle:@"授权失败" andMessage:nil];
+    ShowAlertss(nil, @"授权失败")
 }
 
 //腾讯微博调用接口成功的回调--------(分享,获取当前授权用户信息)
@@ -63,12 +60,11 @@
 {
     NSString * message = [[NSString alloc]initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
 
-//        /**
-//         *  分享成功以后,获取友推后台的对应积分 isShare 是否为友推分享
-//         */
-//        [YouTuiSDK SharePointisShare:YES];
-    
-    [self ShowAlertTitle:@"Results" andMessage:[NSString stringWithFormat:@"%@",message]];
+   /**
+    *  分享成功以后,获取友推后台的对应积分 isShare 是否为友推分享
+    */
+    [YouTuiSDK SharePointisShare:YES];
+    ShowAlertss(@"Results", message)
     
 }
 /**
@@ -78,7 +74,8 @@
  */
 -(void)didFailWithError:(NSError *)error reqNo:(int)reqno
 {
-    [self ShowAlertTitle:@"腾讯微博分享失败" andMessage:[NSString stringWithFormat:@"%@",error.userInfo]];
+    NSString * message = [NSString stringWithFormat:@"%@",error.userInfo];
+    ShowAlertss(@"腾讯微博分享失败",message)
 }
 
 /**
@@ -88,7 +85,7 @@
  */
 -(void)didNeedRelogin:(NSError *)error reqNo:(int)reqno
 {
-    [self ShowAlertTitle:@"分享错误" andMessage:@"请先授权"];
+    ShowAlertss(@"分享错误", @"请先授权")
 }
 
 /**
@@ -110,10 +107,4 @@
         DLog(@"腾讯微博授权无效");
     }
 }
--(void)ShowAlertTitle:(NSString *)title andMessage:(NSString *)message
-{
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:title message:message delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-    [alert show];
-}
-
 @end

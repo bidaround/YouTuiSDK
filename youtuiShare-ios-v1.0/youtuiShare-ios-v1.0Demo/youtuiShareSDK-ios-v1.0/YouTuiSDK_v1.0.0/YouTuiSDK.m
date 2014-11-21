@@ -15,17 +15,20 @@
 #define YTAPPID @"YTAPPIDKEY"
 #define SHAREURL @"SHAREURL"
 #define CHANNELID @"CHANNELID"
+@interface YouTuiSDK ()
+@property (strong , nonatomic) WeiboApi * WBApi;
+@property (strong , nonatomic) WeiboSDK * SinaWB;
+@property (strong , nonatomic) TencentOAuth * TcAuth;
+@property (strong , nonatomic) YouTuiSDK * YTsdk;
+@end
 @implementation YouTuiSDK
-{
-    WeiboApi * WBApi;
-    WeiboSDK * SinaWB;
-    TencentOAuth * TcAuth;
-}
 
+@synthesize WBApi,SinaWB,TcAuth,YTsdk;
 -(id)init
 {
     self = [super init];
-    if (self != nil) {
+    if (self != nil)
+    {
         WBApi = [[WeiboApi alloc]init];
         SinaWB = [[WeiboSDK alloc]init];
         TcAuth = [[TencentOAuth alloc]init];
@@ -290,14 +293,23 @@
  */
 +(NSDictionary *)SinaGetUserInfoWithAppkey:(NSString *)Appkey Uid:(NSString *)Uid
 {
-//    NSString * body = [NSString stringWithFormat:@"source=%@&uid=%@",Appkey,Uid];
-//    return [[self PostRequestData:@"https://api.weibo.com/2/users/show.json?" body:body] JSONValue];
     NSString * URLString = [NSString stringWithFormat:@"https://api.weibo.com/2/users/show.json?access_token=%@&uid=%@",Appkey,Uid];
     NSURL * URL = [NSURL URLWithString:URLString];
     NSURLRequest * request = [[NSURLRequest alloc]initWithURL:URL];
     NSData * received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
     NSString * str = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
     return [str JSONValue];
+}
+
++(NSDictionary *)GetRequestDataURL:(NSString *)URL andBody:(NSString *)body
+{
+    NSString * URLString = [NSString stringWithFormat:@"%@%@",URL,body];
+    NSURL * url = [NSURL URLWithString:URLString];
+    NSURLRequest * request = [[NSURLRequest alloc]initWithURL:url];
+    NSData * received = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSString * str = [[NSString alloc]initWithData:received encoding:NSUTF8StringEncoding];
+    return [str JSONValue];
+
 }
 /**
  *  新浪微博客户端回调
@@ -463,29 +475,15 @@
 }
 
 /**
- *  微信获取当前授权用户的信息
- *
- *  @param AppId  微信开放平台申请的AppId
- *  @param Secret 微信开房平台申请的AppSecret
- *  @param code   用户换取access_token的code，仅在ErrCode为0时有效
- *
- *  @return 用户信息
- */
-+(NSString *)WxAuthGetUserInfoWithAppId:(NSString *)AppId Secret:(NSString *)Secret Code:(NSString *)code
-{
-    NSDictionary * AuthDict = [[YouTuiSDK PostRequestData:@"https://api.weixin.qq.com/sns/oauth2/access_token?" body:[NSString stringWithFormat:@"appid=%@&secret=%@&code=%@&grant_type=authorization_code",AppId,Secret,code]] JSONValue];
-    NSString * UserInfo = [YouTuiSDK PostRequestData:@"https://api.weixin.qq.com/sns/userinfo?" body:[NSString stringWithFormat:@"access_token=%@&openid=%@",[AuthDict objectForKey:@"access_token"],[AuthDict objectForKey:@"openid"]]];
-    return UserInfo;
-}
-
-/**
  *  微信获取当前授权用户的认证信息
  *
  *  @return 认证数据
  */
 +(NSDictionary *)WxAuthGetAccessTokenWithAppId:(NSString *)AppId Secret:(NSString *)Secret Code:(NSString *)code
 {
-    NSDictionary * AuthDict = [[YouTuiSDK PostRequestData:@"https://api.weixin.qq.com/sns/oauth2/access_token?" body:[NSString stringWithFormat:@"appid=%@&secret=%@&code=%@&grant_type=authorization_code",AppId,Secret,code]] JSONValue];
+//    NSDictionary * AuthDict = [[YouTuiSDK PostRequestData:@"https://api.weixin.qq.com/sns/oauth2/access_token?"
+//                                                     body:[NSString stringWithFormat:@"appid=%@&secret=%@&code=%@&grant_type=authorization_code",AppId,Secret,code]] JSONValue];
+    NSDictionary * AuthDict = [YouTuiSDK GetRequestDataURL:@"https://api.weixin.qq.com/sns/oauth2/access_token?" andBody:[NSString stringWithFormat:@"appid=%@&secret=%@&code=%@&grant_type=authorization_code",AppId,Secret,code]];
     return AuthDict;
 }
 /**
@@ -498,10 +496,10 @@
  */
 +(NSDictionary *)WxAuthGetUserInfoWithAccessToken:(NSString *)AccessToken Openid:(NSString *)Openid
 {
-    NSDictionary * UserInfo = [[YouTuiSDK PostRequestData:@"https://api.weixin.qq.com/sns/userinfo?" body:[NSString stringWithFormat:@"access_token=%@&openid=%@",AccessToken,Openid]] JSONValue];
+//    NSDictionary * UserInfo = [[YouTuiSDK PostRequestData:@"https://api.weixin.qq.com/sns/userinfo?" body:[NSString stringWithFormat:@"access_token=%@&openid=%@",AccessToken,Openid]] JSONValue];
+    NSDictionary * UserInfo = [YouTuiSDK GetRequestDataURL:@"https://api.weixin.qq.com/sns/userinfo?" andBody:[NSString stringWithFormat:@"access_token=%@&openid=%@",AccessToken,Openid]];
     return UserInfo;
 }
-
 
 
 /**

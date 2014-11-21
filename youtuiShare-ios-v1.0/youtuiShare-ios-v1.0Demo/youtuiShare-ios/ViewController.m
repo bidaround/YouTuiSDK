@@ -60,13 +60,14 @@
     ShareImageURL = [ShareContentDict objectForKey:@"sharePicUrl"];             //分享图片URL
     ShareVideoURL = @"http://v.youku.com/v_show/id_XNjk4NjczMzg0.html";         //分享视频URL
     ShareImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:ShareImageURL]]];    //分享图片
-    NSLog(@"微信是否已安装:%hhd",[YouTuiSDK WxIsAppOnstalled]);
-    NSLog(@"新浪是否已安装:%hhd",[YouTuiSDK SinaIsAppInstalled]);
-    NSLog(@"QQ是否已安装:%hhd",[YouTuiSDK QQisInstalled]);
+    DLog(@"微信是否已安装:%hhd",[YouTuiSDK WxIsAppOnstalled]);
+    DLog(@"新浪是否已安装:%hhd",[YouTuiSDK SinaIsAppInstalled]);
+    DLog(@"QQ是否已安装:%hhd",[YouTuiSDK QQisInstalled]);
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(TcWbLogin:) name:@"TCWBAUTH" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ShowTcWbShareMessgaeUI) name:@"TCWBSHAREUI" object:nil];
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -77,8 +78,8 @@
     imageArray = [[NSArray alloc]init];
     pointArray = [[NSArray alloc]init];
     
-    titleArray = @[@"微信",@"微信朋友圈",@"新浪微博",@"QQ",@"QQ空间",@"腾讯微博",@"人人网",@"短信",@"邮件",@"复制链接"];
-    imageArray = @[@"wechatR",@"wechatf",@"sinaR",@"qqR",@"qqzone",@"tcwbR",@"rennR",@"sms",@"email",@"mark"];
+    titleArray = @[@"微信",@"微信朋友圈",@"微信收藏",@"新浪微博",@"QQ",@"QQ空间",@"腾讯微博",@"人人网",@"短信",@"邮件",@"复制链接"];
+    imageArray = @[@"wechatR",@"wechatf",@"wechatc",@"sinaR",@"qqR",@"qqzone",@"tcwbR",@"rennR",@"sms",@"email",@"mark"];
 }
 -(void)GetYouTuiSharePoint
 {
@@ -88,7 +89,6 @@
     if (dataDict == nil)
     {
         dataDict = [[YouTuiSDK GetPointRule] objectForKey:@"object"];
-        NSLog(@"空");
     }
     
     //如果获取到活动标题,就改变展示视图的取消按钮方法...直接跳到积分商城
@@ -101,6 +101,7 @@
     {
         pointArray = @[[dataDict objectForKey:@"channel3"],   //微信分享积分
                        [dataDict objectForKey:@"channel10"],  //微信朋友圈分享积分
+                       [dataDict objectForKey:@"channel14"],  //微信收藏分享积分
                        [dataDict objectForKey:@"channel0"],   //新浪微博分享积分
                        [dataDict objectForKey:@"channel5"],   //QQ分享积分
                        [dataDict objectForKey:@"channel2"],   //QQ空间分享积分
@@ -234,51 +235,59 @@
             break;
         case 2:
         {
-            //新浪微博
-            [self SinaShare];
+            //微信收藏
+            [self Wxcollection];
         }
             break;
         case 3:
+        {
+            //新浪微博
+            [self SinaShare];
+
+        }
+            break;
+        case 4:
         {
             //QQ分享
             [self QQShare];
         }
             break;
-        case 4:
+        case 5:
         {
             //QQ空间分享
             [self QQZoneShare];
         }
             break;
-        case 5:
+        case 6:
         {
             //腾讯微博分享
             [self TcWbShare];
         }
             break;
-        case 6:
+        case 7:
         {
             //人人网分享
             [self RennShare];
         }
             break;
-        case 7:
+        case 8:
         {
             //短信分享
             [self MessageShare];
         }
             break;
-        case 8:
+        case 9:
         {
             //邮件分享
             [self EmailShare];
         }
             break;
-        case 9:
+        case 10:
         {
             //复制链接
             [YouTuiSDK CopyLinkWithLink:@"https://open.weixin.qq.com/cgi-bin/frame?t=resource/res_main_tmpl&verify=1&lang=zh_CN&target=res/app_download_ios"];
-            [self ShowAlertTitle:nil andMessage:@"复制链接成功"];
+            ShowAlertss(nil, @"复制链接成功")
+
         }
             break;
 
@@ -293,12 +302,6 @@
 {
     [BlackView removeFromSuperview];
     [_TCShareView removeFromSuperview];
-}
-
--(void)ShowAlertTitle:(NSString *)title andMessage:(NSString *)message
-{
-    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:title message:message delegate:self cancelButtonTitle:@"好" otherButtonTitles:nil];
-    [alert show];
 }
 
 #pragma mark ----------第三方授权
@@ -392,7 +395,8 @@
         default:
             break;
     }
-    [self ShowAlertTitle:@"提示" andMessage:StateMsg];
+
+    ShowAlertss(@"提示", StateMsg)
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -428,7 +432,7 @@
         default:
             break;
     }
-    [self ShowAlertTitle:@"提示" andMessage:stateMsg];
+    ShowAlertss(@"提示", stateMsg)
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -453,7 +457,7 @@
      *  AppUserId   开发者自行设置的用户id
      */
    NSString * message = [_YTsdk checkUserPointAppUserId:AppUserID];
-   [self ShowAlertTitle:@"积分明细" andMessage:message];
+    ShowAlertss(@"积分明细", message)
 }
 
 //领取自定义积分
@@ -464,7 +468,7 @@
      *  CustomPoint   友推后台设置的自定义积分奖励
      */
     NSString * message = [_YTsdk CustomPoint:@"发帖子"];
-    [self ShowAlertTitle:@"领取自定义积分" andMessage:message];
+    ShowAlertss(@"领取自定义积分",message)
 }
 //领取签到积分
 -(IBAction)GetLoginPoint:(id)sender
@@ -473,7 +477,7 @@
      *  领取签到积分
      */
     NSString * message = [_YTsdk GetloginPoint];
-    [self ShowAlertTitle:nil andMessage:message];
+    ShowAlertss(nil, message)
 }
 
 -(IBAction)PointStore:(id)sender
@@ -508,7 +512,7 @@
      *  AppUserId   开发者自行设置的受赠用户AppUserId
      */
    NSString * message = [_YTsdk GetPoint:@"5" appUserId:@"11111"];
-    [self ShowAlertTitle:nil andMessage:message];
+    ShowAlertss(nil, message);
 }
 
 //扣除积分
@@ -520,8 +524,10 @@
      *  reducePoint     扣除的积分数
      *  reason          扣除积分的理由
      */
-    NSString * message = [_YTsdk reduceUserPointAppUserId:AppUserID reducePoint:@"5" reason:@"扣你积分不带理由"];
-    [self ShowAlertTitle:nil andMessage:message];
+    NSString * message = [_YTsdk reduceUserPointAppUserId:AppUserID
+                                              reducePoint:@"5"
+                                                   reason:@"扣你积分不带理由"];
+    ShowAlertss(nil, message)
 }
 
 -(void)buttonAction
@@ -536,6 +542,7 @@
 //微信分享
 -(void)WxShare
 {
+    
     [_YTsdk WxShareMusicTitle:@"Back at One"
                   Description:@"Brian McKnight"
                         Image:[UIImage imageNamed:@"musicImage"]
@@ -543,6 +550,17 @@
                  MusicDataUrl:@"http://stream20.qqmusic.qq.com/325090.mp3"
                          Type:0];
 
+}
+
+//微信收藏
+-(void)Wxcollection
+{
+    [_YTsdk WxShareMusicTitle:@"Back at One"
+                  Description:@"Brian McKnight"
+                        Image:[UIImage imageNamed:@"musicImage"]
+                     MusicUrl:@"http://y.qq.com/#type=song&mid=001qrEDN17Wthk&from=smartbox"
+                 MusicDataUrl:@"http://stream20.qqmusic.qq.com/325090.mp3"
+                         Type:2];
 }
 
 //微信朋友圈分享
@@ -590,12 +608,12 @@
 -(void)TcWbShare
 {
     //判断回调是否为授权的回调
-    [_YTsdk checkAuthValidDelegate:_TcWbCB];
+    [_TcWbCB.YTsdk checkAuthValidDelegate:_TcWbCB];
 }
 
 -(void)ShareMessage
 {
-    [_YTsdk TcWbShareMessage:_TCShareTextView.text
+    [_TcWbCB.YTsdk TcWbShareMessage:_TCShareTextView.text
                  andImageUrl:ShareImageURL
                     VideoUrl:ShareVideoURL
                    Longitude:@"113.414125"
@@ -674,6 +692,7 @@
     
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TapAction)];
     [BlackView addGestureRecognizer:tap];
+
 
 }
 -(void)cancelButtonAction

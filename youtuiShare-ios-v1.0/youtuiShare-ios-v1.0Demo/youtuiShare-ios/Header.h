@@ -5,11 +5,14 @@
 //  Created by FreeGeek on 14-10-21.
 //  Copyright (c) 2014年 FreeGeek. All rights reserved.
 //
+#import <UIKit/UIKit.h>
 #ifdef DEBUG
-# define DLog(fmt, ...) NSLog((@"[函数名:%s]" "[行号:%d] " fmt),__FUNCTION__, __LINE__, ##__VA_ARGS__);
+# define DLog(fmt, ...) NSLog((@"[函数名:%s]" "[行号:%d]" fmt),__FUNCTION__, __LINE__, ##__VA_ARGS__);
 #else
 # define DLog(...);
 #endif
+
+#define ShowAlertss(title,msg) [[[UIAlertView alloc]initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil, nil] show];
 
 #ifndef youtuiShare_Header_h
 #define youtuiShare_Header_h
