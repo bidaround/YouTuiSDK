@@ -63,7 +63,7 @@
     DLog(@"微信是否已安装:%hhd",[YouTuiSDK WxIsAppOnstalled]);
     DLog(@"新浪是否已安装:%hhd",[YouTuiSDK SinaIsAppInstalled]);
     DLog(@"QQ是否已安装:%hhd",[YouTuiSDK QQisInstalled]);
-    
+    DLog(@"%@",ShareImageURL);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(TcWbLogin:) name:@"TCWBAUTH" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(ShowTcWbShareMessgaeUI) name:@"TCWBSHAREUI" object:nil];

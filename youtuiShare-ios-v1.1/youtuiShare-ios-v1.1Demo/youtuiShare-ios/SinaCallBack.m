@@ -42,6 +42,7 @@
          *  分享成功以后,获取友推后台的对应积分 isShare 是否为友推分享
          */
         [YouTuiSDK SharePointisShare:YES];
+
     }
     else if([response isKindOfClass:WBAuthorizeResponse.class])
     {
